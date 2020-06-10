@@ -1,0 +1,26 @@
+# netlify-plugin-inline-functions-env
+
+Inline process.env.X in netlify functions with netlify build time environment variables.
+
+Input
+
+```
+console.log(process.env.SITE_NAME);
+```
+
+Output
+
+```
+console.log("My cool website");
+```
+
+## Install
+
+To install, add the following lines to your `netlify.toml` file:
+
+```toml
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
+```
+
+Note: The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.

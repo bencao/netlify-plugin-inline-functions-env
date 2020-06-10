@@ -1,0 +1,17 @@
+{
+  "name": "netlify-plugin-inline-functions-env",
+  "version": "1.0.0",
+  "description": "Inline build time environment variables into function code",
+  "homepage": "https://github.com/bencao/netlify-plugin-inline-functions-env",
+  "bugs": "https://github.com/bencao/netlify-plugin-inline-functions-env/issues",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Cao",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.10.2",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3"
+  }
+}
