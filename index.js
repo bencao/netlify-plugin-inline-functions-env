@@ -54,8 +54,12 @@ async function inlineEnv(path, verbose = false) {
 }
 
 module.exports = {
-  onPostBuild: async ({ inputs, netlifyConfig }) => {
+  onPreBuild: async ({ inputs, netlifyConfig }) => {
     const verbose = !!inputs.verbose;
+
+    if (verbose) {
+      console.log("build env", process.env);
+    }
 
     if (netlifyConfig.build && netlifyConfig.build.functions) {
       const files = await findAllJSFiles(netlifyConfig.build.functions);
