@@ -34,7 +34,7 @@ async function findAllJSFiles(folder) {
   return jsFilePaths.flat().filter(p => !!p);
 }
 
-async function inlineEnv(path) {
+async function inlineEnv(path, verbose = false) {
   console.log("inlining", path);
 
   const transformed = await babel.transformFileAsync(path, {
@@ -42,15 +42,29 @@ async function inlineEnv(path) {
     retainLines: true
   });
 
+  if (verbose) {
+    console.log("transformed code", transformed.code);
+  }
+
   await fs.promises.writeFile(path, transformed.code, "utf8");
+
+  if (verbose) {
+    console.log("updated file content", path, await fs.promises.readFile(path));
+  }
 }
 
 module.exports = {
-  onPostBuild: async ({ netlifyConfig }) => {
+  onPostBuild: async ({ inputs, netlifyConfig }) => {
+    const verbose = !!inputs.verbose;
+
     if (netlifyConfig.build && netlifyConfig.build.functions) {
       const files = await findAllJSFiles(netlifyConfig.build.functions);
 
-      return Promise.all(files.map(inlineEnv));
+      if (verbose) {
+        console.log("found files", files);
+      }
+
+      return Promise.all(files.map(f => inlineEnv(f, verbose)));
     }
   }
 };
