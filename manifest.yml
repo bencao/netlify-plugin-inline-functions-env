@@ -1,1 +1,4 @@
 name: netlify-plugin-inline-function-env
+inputs:
+  - name: verbose
+    description: Turn on more logs for debugging

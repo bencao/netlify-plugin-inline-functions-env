@@ -1,6 +1,6 @@
 {
   "name": "netlify-plugin-inline-functions-env",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Inline build time environment variables into function code",
   "homepage": "https://github.com/bencao/netlify-plugin-inline-functions-env",
   "bugs": "https://github.com/bencao/netlify-plugin-inline-functions-env/issues",
