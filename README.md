@@ -4,16 +4,34 @@
 
 Inline process.env.X in netlify functions with netlify build time environment variables.
 
-Input
+Original Function Source File
 
 ```
-console.log(process.env.SITE_NAME);
+function handler(event, context) {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      CONTEXT: process.env.CONTEXT
+    })
+  };
+};
+
+module.exports = { handler };
 ```
 
-Output
+Inlined Function Source File
 
 ```
-console.log("My cool website");
+function handler(event, context) {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      CONTEXT: "deploy-preview"    <---------- replaced with build time env var values
+    })
+  };
+};
+
+module.exports = { handler };
 ```
 
 ## Install
