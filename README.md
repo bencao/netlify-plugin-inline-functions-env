@@ -1,5 +1,7 @@
 # netlify-plugin-inline-functions-env
 
+[![npm version](https://badge.fury.io/js/netlify-plugin-inline-functions-env.svg)](https://badge.fury.io/js/netlify-plugin-inline-functions-env)
+
 Inline process.env.X in netlify functions with netlify build time environment variables.
 
 Input
