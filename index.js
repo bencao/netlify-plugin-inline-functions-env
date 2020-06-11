@@ -19,6 +19,7 @@ async function findAllJSFiles(folder) {
 
         return absPath;
       } else if (f.isDirectory()) {
+        // ignore node_modules
         if (name === "node_modules") {
           return null;
         }
@@ -47,28 +48,41 @@ async function inlineEnv(path, verbose = false) {
   }
 
   await fs.promises.writeFile(path, transformed.code, "utf8");
-
-  if (verbose) {
-    console.log("updated file content", path, await fs.promises.readFile(path));
-  }
 }
 
 module.exports = {
-  onPreBuild: async ({ inputs, netlifyConfig }) => {
+  onPreBuild: async ({ inputs, utils, netlifyConfig }) => {
     const verbose = !!inputs.verbose;
 
     if (verbose) {
-      console.log("build env", process.env);
+      console.log(
+        "build env contains the following environment variables",
+        Object.keys(process.env)
+      );
     }
 
     if (netlifyConfig.build && netlifyConfig.build.functions) {
-      const files = await findAllJSFiles(netlifyConfig.build.functions);
+      try {
+        const files = await findAllJSFiles(netlifyConfig.build.functions);
 
-      if (verbose) {
-        console.log("found files", files);
+        if (verbose) {
+          console.log("found function files", files);
+        }
+
+        await Promise.all(files.map(f => inlineEnv(f, verbose)));
+
+        utils.status.show({
+          summary: `Processed ${files.length} function file(s).`
+        });
+      } catch (err) {
+        return utils.build.failBuild(
+          `Failed to inline function files due to the following error:\n${err.message}`
+        );
       }
-
-      return Promise.all(files.map(f => inlineEnv(f, verbose)));
+    } else {
+      utils.status.show({
+        summary: "Skipped processing because the project had no functions."
+      });
     }
   }
 };
