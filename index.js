@@ -76,7 +76,8 @@ module.exports = {
         });
       } catch (err) {
         return utils.build.failBuild(
-          `Failed to inline function files due to the following error:\n${err.message}`
+          `Failed to inline function files due to the following error:\n${err.message}`,
+          { error: err }
         );
       }
     } else {
