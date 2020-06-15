@@ -1,40 +1,7 @@
 const fs = require('fs')
-const path = require('path')
 
 const babel = require('@babel/core')
 const inlinePlugin = require('babel-plugin-transform-inline-environment-variables')
-
-async function findAllJSFiles(folder) {
-  const names = await fs.promises.readdir(folder)
-
-  const jsFilePaths = await Promise.all(
-    names.map(async (name) => {
-      const absPath = path.join(folder, name)
-
-      const f = await fs.promises.stat(absPath)
-
-      if (f.isFile()) {
-        if (!name.endsWith('.js')) {
-          return null
-        }
-
-        return absPath
-      } else if (f.isDirectory()) {
-        // ignore node_modules
-        if (name === 'node_modules') {
-          return null
-        }
-
-        return findAllJSFiles(absPath)
-      } else {
-        // ignore symlinks and others
-        return null
-      }
-    })
-  )
-
-  return jsFilePaths.flat().filter((p) => !!p)
-}
 
 async function inlineEnv(path, verbose = false) {
   console.log('inlining', path)
@@ -51,7 +18,7 @@ async function inlineEnv(path, verbose = false) {
   await fs.promises.writeFile(path, transformed.code, 'utf8')
 }
 
-async function processFiles({ inputs, utils, netlifyConfig }) {
+async function processFiles({ inputs, utils }) {
   const verbose = !!inputs.verbose
 
   if (verbose) {
@@ -61,10 +28,11 @@ async function processFiles({ inputs, utils, netlifyConfig }) {
     )
   }
 
-  if (netlifyConfig.build && netlifyConfig.build.functions) {
-    try {
-      const files = await findAllJSFiles(netlifyConfig.build.functions)
+  const netlifyFunctions = await utils.functions.listAll()
+  const files = netlifyFunctions.filter(isJsFunction).map(getSrcFile)
 
+  if (files.length !== 0) {
+    try {
       if (verbose) {
         console.log('found function files', files)
       }
@@ -85,6 +53,14 @@ async function processFiles({ inputs, utils, netlifyConfig }) {
       summary: 'Skipped processing because the project had no functions.',
     })
   }
+}
+
+function isJsFunction({ runtime, extension, srcFile }) {
+  return runtime === 'js' && extension === '.js' && !srcFile.includes('/node_modules/')
+}
+
+function getSrcFile({ srcFile }) {
+  return srcFile
 }
 
 module.exports = (inputs) => {
