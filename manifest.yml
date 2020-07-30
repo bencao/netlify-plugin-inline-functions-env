@@ -2,3 +2,5 @@ name: netlify-plugin-inline-function-env
 inputs:
   - name: verbose
     description: Turn on more logs for debugging
+  - name: buildEvent
+    description: Choose which netlify build event to trigger on. onPreBuild by default (https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-in-to-build-events)

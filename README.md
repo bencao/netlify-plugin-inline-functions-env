@@ -84,6 +84,8 @@ To install, add the following lines to your `netlify.toml` file:
 package = "netlify-plugin-inline-functions-env"
 ```
 
+## Debugging
+
 You can turn on verbose for debugging purpose by providing plugin inputs.
 
 ```toml
@@ -93,6 +95,26 @@ package = "netlify-plugin-inline-functions-env"
   verbose = "true"
 ```
 
-Note: The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.
+> Be careful with verbose mode, as it will print the files with the replaced env variables
 
-Also please add `netlify-plugin-inline-functions-env` to your dev dependencies by `yarn install --dev netlify-plugin-inline-functions-env` or `npm install --save-dev netlify-plugin-inline-functions-env`.
+## Configuring build event
+
+If you are using TypeScript, or processing your code in other ways you may want to choose `onBuild`
+
+```toml
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
+  [plugins.inputs]
+  buildEvent = "onBuild"
+```
+
+Default value is `onPreBuild`. It's also been tested to work with `onBuild`
+The values for buildEvent can be found [here](https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-in-to-build-events)
+
+## Gotchas
+
+1. The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.
+
+2. This plugin only replaces variables in the functions directory. Files outside the directory won't be modified.
+
+3. Also please add `netlify-plugin-inline-functions-env` to your dev dependencies by `yarn install --dev netlify-plugin-inline-functions-env` or `npm install --save-dev netlify-plugin-inline-functions-env`.
