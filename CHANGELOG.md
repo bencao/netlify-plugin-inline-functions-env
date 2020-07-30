@@ -1,3 +1,7 @@
+# 07/30/2020
+
+- Added `buildEvent` configuration option
+
 # 06/11/2020
 
 - Improved error handling
