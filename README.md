@@ -25,7 +25,7 @@ This is when your function code is evaluated when a request was received. The fo
 
 **Problem**
 
-You may have noticed that for the available environment variables at Runtime variables is only a subset of that in build time.
+You may have noticed that the available environment variables at Runtime is only a subset of that in build time.
 
 That is a common source of confusion for many people, see discussions over [here](https://community.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
 
