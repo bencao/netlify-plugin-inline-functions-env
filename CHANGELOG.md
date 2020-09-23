@@ -1,3 +1,7 @@
+# 09/22/2020
+
+- Improved readability by utilizing built-in `utils.functions.listAll`
+
 # 07/30/2020
 
 - Added `buildEvent` configuration option
