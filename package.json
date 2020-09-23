@@ -6,6 +6,7 @@
   "bugs": "https://github.com/bencao/netlify-plugin-inline-functions-env/issues",
   "main": "index.js",
   "scripts": {
+    "format": "prettier index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ben Cao",
@@ -13,5 +14,8 @@
   "dependencies": {
     "@babel/core": "^7.10.2",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3"
+  },
+  "devDependencies": {
+    "ava": "^3.11.0"
   }
 }
