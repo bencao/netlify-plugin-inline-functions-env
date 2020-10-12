@@ -39,6 +39,11 @@ async function processFiles({ inputs, utils }) {
       const include = inputs.include && [inputs.include].flat()
       const exclude = inputs.exclude && [inputs.exclude].flat()
 
+      if (verbose) {
+        console.log('flags.include=', include)
+        console.log('flags.exclude=', exclude)
+      }
+
       await Promise.all(
         files.map((f) => inlineEnv(f, { include, exclude }, verbose))
       )
