@@ -25,7 +25,7 @@ This is when your function code is evaluated when a request was received. The fo
 
 **Problem**
 
-You may have noticed that for the available environment variables at Runtime variables is only a subset of that in build time.
+You may have noticed that the available environment variables at Runtime is only a subset of that in build time.
 
 That is a common source of confusion for many people, see discussions over [here](https://community.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
 
@@ -84,7 +84,9 @@ To install, add the following lines to your `netlify.toml` file:
 package = "netlify-plugin-inline-functions-env"
 ```
 
-## Debugging
+## More Options
+
+### Debugging
 
 You can turn on verbose for debugging purpose by providing plugin inputs.
 
@@ -97,7 +99,7 @@ package = "netlify-plugin-inline-functions-env"
 
 > Be careful with verbose mode, as it will print the files with the replaced env variables
 
-## Configuring build event
+### Configuring build event
 
 If you are using TypeScript, or processing your code in other ways you may want to choose `onBuild`
 
@@ -110,6 +112,24 @@ package = "netlify-plugin-inline-functions-env"
 
 Default value is `onPreBuild`. It's also been tested to work with `onBuild`
 The values for buildEvent can be found [here](https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-in-to-build-events)
+
+### Conditional Transformation
+
+If you are using libraries such as [dotenv-defaults](https://github.com/mrsteele/dotenv-defaults), you may want to limit or skip the transformation for certain environment variables.
+
+```toml
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
+  [plugins.inputs]
+  exclude = ["DO_NOT_TRANSFORM_ME", "DO_NOT_TRANSFORM_ME_2"]
+```
+
+```toml
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
+  [plugins.inputs]
+  include = ["ONLY_TRANSFORM_ME", "ONLY_TRANSFORM_ME_2"]
+```
 
 ## Gotchas
 

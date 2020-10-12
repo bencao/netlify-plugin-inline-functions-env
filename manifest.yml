@@ -4,3 +4,7 @@ inputs:
     description: Turn on more logs for debugging
   - name: buildEvent
     description: Choose which netlify build event to trigger on. onPreBuild by default (https://docs.netlify.com/configure-builds/build-plugins/create-plugins/#plug-in-to-build-events)
+  - name: include
+    description: Only tranform whitelisted environment variables
+  - name: exclude
+    description: Do not tranform selected environment variables

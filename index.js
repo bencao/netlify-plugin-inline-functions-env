@@ -1,13 +1,12 @@
 const fs = require('fs')
-
 const babel = require('@babel/core')
 const inlinePlugin = require('babel-plugin-transform-inline-environment-variables')
 
-async function inlineEnv(path, verbose = false) {
+async function inlineEnv(path, options = {}, verbose = false) {
   console.log('inlining', path)
 
   const transformed = await babel.transformFileAsync(path, {
-    plugins: [babel.createConfigItem(inlinePlugin)],
+    plugins: [babel.createConfigItem([inlinePlugin, options])],
     retainLines: true,
   })
 
@@ -37,7 +36,12 @@ async function processFiles({ inputs, utils }) {
         console.log('found function files', files)
       }
 
-      await Promise.all(files.map((f) => inlineEnv(f, verbose)))
+      const include = inputs.include && [inputs.include].flat()
+      const exclude = inputs.exclude && [inputs.exclude].flat()
+
+      await Promise.all(
+        files.map((f) => inlineEnv(f, { include, exclude }, verbose))
+      )
 
       utils.status.show({
         summary: `Processed ${files.length} function file(s).`,
@@ -56,7 +60,11 @@ async function processFiles({ inputs, utils }) {
 }
 
 function isJsFunction({ runtime, extension, srcFile }) {
-  return runtime === 'js' && extension === '.js' && !srcFile.includes('/node_modules/')
+  return (
+    runtime === 'js' &&
+    extension === '.js' &&
+    !srcFile.includes('/node_modules/')
+  )
 }
 
 function getSrcFile({ srcFile }) {

@@ -1,3 +1,7 @@
+# 09/23/2020
+
+- Added `include` and `exclude` configuration option to support cases that users do not want(or only want) to transform specific environment variables
+
 # 09/22/2020
 
 - Improved readability by utilizing built-in `utils.functions.listAll`
