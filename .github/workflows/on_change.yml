@@ -1,0 +1,61 @@
+name: 'Netlify Plugin Inline Functions Env Github Actions'
+on:
+  - pull_request
+  - push
+jobs:
+  test-node-10:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Install
+        run: |
+          npm install
+
+      - name: Test
+        run: |
+          npm run test
+
+  test-node-12:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install
+        run: |
+          npm install
+
+      - name: Test
+        run: |
+          npm run test
+
+  test-node-14:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install
+        run: |
+          npm install
+
+      - name: Test
+        run: |
+          npm run test

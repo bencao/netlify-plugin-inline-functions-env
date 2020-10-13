@@ -5,9 +5,10 @@
   "homepage": "https://github.com/bencao/netlify-plugin-inline-functions-env",
   "bugs": "https://github.com/bencao/netlify-plugin-inline-functions-env/issues",
   "main": "index.js",
+  "files": ["index.js", "lib.js", "README.md"],
   "scripts": {
     "format": "prettier index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "author": "Ben Cao",
   "license": "MIT",
@@ -16,6 +17,6 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3"
   },
   "devDependencies": {
-    "ava": "^3.11.0"
+    "ava": "^3.13.0"
   }
 }

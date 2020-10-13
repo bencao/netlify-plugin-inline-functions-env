@@ -1,3 +1,8 @@
+# 10/13/2020
+
+- Fixed a regression that failed build for Node 10 environments
+- added unit test infrastructure
+
 # 09/23/2020
 
 - Added `include` and `exclude` configuration option to support cases that users do not want(or only want) to transform specific environment variables

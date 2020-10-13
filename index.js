@@ -1,6 +1,7 @@
 const fs = require('fs')
 const babel = require('@babel/core')
 const inlinePlugin = require('babel-plugin-transform-inline-environment-variables')
+const { normalizeInputValue, isJsFunction, getSrcFile } = require('./lib')
 
 async function inlineEnv(path, options = {}, verbose = false) {
   console.log('inlining', path)
@@ -36,8 +37,8 @@ async function processFiles({ inputs, utils }) {
         console.log('found function files', files)
       }
 
-      const include = inputs.include && [inputs.include].flat()
-      const exclude = inputs.exclude && [inputs.exclude].flat()
+      const include = normalizeInputValue(inputs.include)
+      const exclude = normalizeInputValue(inputs.exclude)
 
       if (verbose) {
         console.log('flags.include=', include)
@@ -62,18 +63,6 @@ async function processFiles({ inputs, utils }) {
       summary: 'Skipped processing because the project had no functions.',
     })
   }
-}
-
-function isJsFunction({ runtime, extension, srcFile }) {
-  return (
-    runtime === 'js' &&
-    extension === '.js' &&
-    !srcFile.includes('/node_modules/')
-  )
-}
-
-function getSrcFile({ srcFile }) {
-  return srcFile
 }
 
 module.exports = (inputs) => {
