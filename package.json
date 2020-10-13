@@ -5,7 +5,11 @@
   "homepage": "https://github.com/bencao/netlify-plugin-inline-functions-env",
   "bugs": "https://github.com/bencao/netlify-plugin-inline-functions-env/issues",
   "main": "index.js",
-  "files": ["index.js", "lib.js", "README.md"],
+  "files": [
+    "index.js",
+    "lib.js",
+    "README.md"
+  ],
   "scripts": {
     "format": "prettier index.js",
     "test": "ava"
@@ -13,7 +17,7 @@
   "author": "Ben Cao",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.10.2",
+    "@babel/core": "^7.11.6",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3"
   },
   "devDependencies": {
