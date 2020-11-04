@@ -1,7 +1,7 @@
 # 10/13/2020
 
 - Fixed a regression that failed build for Node 10 environments
-- added unit test infrastructure
+- Added unit test infrastructure
 
 # 09/23/2020
 
