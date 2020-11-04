@@ -10,7 +10,7 @@ test('normalizeInputValue array', (t) => {
 })
 
 test('normalizeInputValue undefined', (t) => {
-  t.deepEqual(normalizeInputValue(undefined), [])
+  t.deepEqual(normalizeInputValue(undefined), undefined)
 })
 
 test('isJsFunction js', (t) => {

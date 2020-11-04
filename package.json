@@ -21,6 +21,8 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3"
   },
   "devDependencies": {
-    "ava": "^3.13.0"
+    "ava": "^3.13.0",
+    "sinon": "^9.2.0",
+    "uuid": "^8.3.1"
   }
 }

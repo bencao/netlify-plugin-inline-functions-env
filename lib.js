@@ -1,6 +1,6 @@
 function normalizeInputValue(singleOrArrayValue) {
   if (!singleOrArrayValue) {
-    return []
+    return singleOrArrayValue
   } else if (Array.isArray(singleOrArrayValue)) {
     return singleOrArrayValue
   } else {

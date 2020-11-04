@@ -1,7 +1,9 @@
 const fs = require('fs')
+const util = require('util')
 const babel = require('@babel/core')
 const inlinePlugin = require('babel-plugin-transform-inline-environment-variables')
 const { normalizeInputValue, isJsFunction, getSrcFile } = require('./lib')
+const writeFile = util.promisify(fs.writeFile)
 
 async function inlineEnv(path, options = {}, verbose = false) {
   console.log('inlining', path)
@@ -15,7 +17,7 @@ async function inlineEnv(path, options = {}, verbose = false) {
     console.log('transformed code', transformed.code)
   }
 
-  await fs.promises.writeFile(path, transformed.code, 'utf8')
+  await writeFile(path, transformed.code, 'utf8')
 }
 
 async function processFiles({ inputs, utils }) {
@@ -65,7 +67,7 @@ async function processFiles({ inputs, utils }) {
   }
 }
 
-module.exports = (inputs) => {
+const handler = (inputs) => {
   // Use user configured buildEvent
   const buildEvent = inputs.buildEvent || 'onPreBuild'
 
@@ -73,3 +75,8 @@ module.exports = (inputs) => {
     [buildEvent]: processFiles,
   }
 }
+
+// expose for testing
+handler.processFiles = processFiles
+
+module.exports = handler
