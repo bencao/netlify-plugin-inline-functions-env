@@ -1,3 +1,8 @@
+# 11/21/2020
+
+- Fixed duplicated tranforms for JS files that are required multiple times
+- Added automatic project publish for contributors
+
 # 10/13/2020
 
 - Fixed a regression that failed build for Node 10 environments

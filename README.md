@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/netlify-plugin-inline-functions-env.svg)](https://badge.fury.io/js/netlify-plugin-inline-functions-env)
 
-[![test status](https://github.com/bencao/netlify-plugin-inline-functions-env/workflows/Netlify%20Plugin%20Inline%20Functions%20Env%20Github%20Actions/badge.svg)](https://github.com/bencao/netlify-plugin-inline-functions-env/actions)
+[![test status](https://github.com/bencao/netlify-plugin-inline-functions-env/workflows/UnitTest/badge.svg)](https://github.com/bencao/netlify-plugin-inline-functions-env/actions)
 
 Inline process.env.X in netlify functions with netlify build time environment variables.
 
