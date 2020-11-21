@@ -30,7 +30,16 @@ async function processFiles({ inputs, utils }) {
     )
   }
 
-  const netlifyFunctions = await utils.functions.listAll()
+  let netlifyFunctions = []
+
+  try {
+    netlifyFunctions = await utils.functions.listAll()
+  } catch (functionMissingErr) {
+    return utils.build.failBuild(
+      'Failed to inline function files because netlify function folder was not configured or pointed to a wrong folder, please check your configuration'
+    )
+  }
+
   const files = uniq(netlifyFunctions.filter(isJsFunction).map(getSrcFile))
 
   if (files.length !== 0) {

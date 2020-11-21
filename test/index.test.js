@@ -9,7 +9,7 @@ const writeFile = util.promisify(fs.writeFile)
 const readFile = util.promisify(fs.readFile)
 const unlink = util.promisify(fs.unlink)
 
-async function run(content, inputs) {
+async function run(content, inputs, otherOptions = {}) {
   const fileName = `${uuidv4()}.txt`
 
   await writeFile(fileName, content)
@@ -18,27 +18,37 @@ async function run(content, inputs) {
     .stub()
     .returns([{ runtime: 'js', extension: '.js', srcFile: fileName }])
 
-  const utils = {
-    functions: { listAll },
-    build: { failBuild: console.log },
-    status: { show: console.log },
-  }
+  const utils = otherOptions.mockUtils
+    ? otherOptions.mockUtils(fileName)
+    : {
+        functions: { listAll },
+        build: { failBuild: console.log },
+        status: { show: console.log },
+      }
 
-  await handler.processFiles({ inputs, utils })
+  const returnCode = await handler.processFiles({ inputs, utils })
 
-  const transformedFile = await readFile(fileName, 'utf8')
+  const transformedFileContent = await readFile(fileName, 'utf8')
 
   await unlink(fileName)
 
-  return transformedFile
+  return {
+    returnCode,
+    transformedFileContent,
+  }
 }
+
+test('empty file', async (t) => {
+  t.is((await run('', {})).transformedFileContent, '')
+})
 
 test('default inputs', async (t) => {
   process.env.VAR_1 = 'foo'
   process.env.VAR_2 = 'bar'
 
   t.is(
-    await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {}),
+    (await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {}))
+      .transformedFileContent,
     `() => {"foo";"bar";};`
   )
 })
@@ -48,9 +58,11 @@ test('inputs with include', async (t) => {
   process.env.VAR_2 = 'bar'
 
   t.is(
-    await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
-      include: ['VAR_1'],
-    }),
+    (
+      await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
+        include: ['VAR_1'],
+      })
+    ).transformedFileContent,
     `() => {"foo";process.env.VAR_2;};`
   )
 })
@@ -60,9 +72,11 @@ test('inputs with exclude', async (t) => {
   process.env.VAR_2 = 'bar'
 
   t.is(
-    await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
-      exclude: ['VAR_1'],
-    }),
+    (
+      await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
+        exclude: ['VAR_1'],
+      })
+    ).transformedFileContent,
     `() => {process.env.VAR_1;"bar";};`
   )
 })
@@ -72,12 +86,28 @@ test('inputs with both include and exclude', async (t) => {
   process.env.VAR_2 = 'bar'
 
   t.is(
-    await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
-      exclude: ['VAR_1'],
-      include: ['VAR_2'],
-    }),
+    (
+      await run(`() => {process.env.VAR_1;process.env.VAR_2;};`, {
+        exclude: ['VAR_1'],
+        include: ['VAR_2'],
+      })
+    ).transformedFileContent,
     `() => {process.env.VAR_1;"bar";};`
   )
+})
+
+test('function folder missing', async (t) => {
+  const failBuild = sinon.stub().returns(1)
+  const listAll = sinon.stub().throws()
+
+  const mockUtils = (fileName) => ({
+    functions: { listAll },
+    build: { failBuild },
+    status: { show: console.log },
+  })
+
+  t.is((await run('', {}, { mockUtils })).returnCode, 1)
+  t.is(failBuild.callCount, 1)
 })
 
 test('inputs without buildEvent', async (t) => {

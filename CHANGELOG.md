@@ -2,6 +2,7 @@
 
 - Fixed duplicated tranforms for JS files that are required multiple times
 - Added automatic project publish for contributors
+- Improved handling when netlify function folder does not exist
 
 # 10/13/2020
 
