@@ -4,11 +4,11 @@
 
 [![test status](https://github.com/bencao/netlify-plugin-inline-functions-env/workflows/UnitTest/badge.svg)](https://github.com/bencao/netlify-plugin-inline-functions-env/actions)
 
-Inline process.env.X in netlify functions with netlify build time environment variables.
+Inline build time environment variable values into netlify function code so that it becomes available at runtime.
 
 ## Why
 
-When we talk about environment variable values for a netlify function, it is important to understand that there're two possible context.
+When we talk about environment variable values for a netlify function, it is important to understand that there're two possible contexts.
 
 **Build time**
 
@@ -25,11 +25,11 @@ This is when your function code is evaluated when a request was received. The fo
 
 - Environment Variables you set at Netlify UI
 
-**Problem**
+**The Problem**
 
 You may have noticed that the available environment variables at Runtime is only a subset of that in build time.
 
-That is a common source of confusion for many people, see discussions over [here](https://community.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
+That is a common source of confusion for many people, see those discussions over [here](https://community.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
 
 This plugin was built to mitigate this issue by inlining the build time environment variable values as part of your code, so that you can consider build time environment variables magically become available for runtime!
 
@@ -55,7 +55,7 @@ function handler(event, context) {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      CONTEXT: "deploy-preview"    <---------- replaced with build time env var values
+      CONTEXT: "deploy-preview"    <---------- replaced with build time only env var values
     })
   };
 };
@@ -139,4 +139,4 @@ package = "netlify-plugin-inline-functions-env"
 
 2. This plugin only replaces variables in the functions directory. Files outside the directory won't be modified.
 
-3. Also please add `netlify-plugin-inline-functions-env` to your dev dependencies by `yarn install --dev netlify-plugin-inline-functions-env` or `npm install --save-dev netlify-plugin-inline-functions-env`.
+3. If you want to lock to a specific version(or a version that hasn't been accepted by netlify build system yet), please add `netlify-plugin-inline-functions-env` to your dev dependencies by `yarn install --dev netlify-plugin-inline-functions-env` or `npm install --save-dev netlify-plugin-inline-functions-env`.
