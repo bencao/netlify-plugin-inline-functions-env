@@ -2,7 +2,7 @@ const fs = require('fs')
 const util = require('util')
 const babel = require('@babel/core')
 const inlinePlugin = require('babel-plugin-transform-inline-environment-variables')
-const { normalizeInputValue, isJsFunction, getSrcFile } = require('./lib')
+const { normalizeInputValue, isJsFunction, getSrcFile, uniq } = require('./lib')
 const writeFile = util.promisify(fs.writeFile)
 
 async function inlineEnv(path, options = {}, verbose = false) {
@@ -31,7 +31,7 @@ async function processFiles({ inputs, utils }) {
   }
 
   const netlifyFunctions = await utils.functions.listAll()
-  const files = netlifyFunctions.filter(isJsFunction).map(getSrcFile)
+  const files = uniq(netlifyFunctions.filter(isJsFunction).map(getSrcFile))
 
   if (files.length !== 0) {
     try {

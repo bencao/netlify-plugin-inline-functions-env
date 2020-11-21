@@ -1,0 +1,28 @@
+name: 'UnitTest'
+on:
+  - pull_request
+  - push
+jobs:
+  test:
+    runs-on: ubuntu-16.04
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: |
+          yarn install
+
+      - name: Test
+        run: |
+          yarn test

@@ -1,5 +1,10 @@
 const test = require('ava')
-const { normalizeInputValue, isJsFunction, getSrcFile } = require('../lib')
+const {
+  normalizeInputValue,
+  isJsFunction,
+  getSrcFile,
+  uniq,
+} = require('../lib')
 
 test('normalizeInputValue non array value', (t) => {
   t.deepEqual(normalizeInputValue('abc'), ['abc'])
@@ -45,4 +50,10 @@ test('isJsFunction in node_modules', (t) => {
 
 test('getSrcFile', (t) => {
   t.is(getSrcFile({ srcFile: 'abc' }), 'abc')
+})
+
+test('uniq', (t) => {
+  t.deepEqual(uniq(['a', 'b', 'a', 'c']), ['a', 'b', 'c'])
+
+  t.deepEqual(uniq(['a', 'b', 'c']), ['a', 'b', 'c'])
 })
