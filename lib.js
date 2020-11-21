@@ -20,8 +20,21 @@ function getSrcFile({ srcFile }) {
   return srcFile
 }
 
+function uniq(items) {
+  const uniqItems = []
+
+  items.forEach((item) => {
+    if (!uniqItems.includes(item)) {
+      uniqItems.push(item)
+    }
+  })
+
+  return uniqItems
+}
+
 module.exports = {
   normalizeInputValue,
   isJsFunction,
   getSrcFile,
+  uniq,
 }
