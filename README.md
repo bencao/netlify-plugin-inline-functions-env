@@ -140,3 +140,5 @@ package = "netlify-plugin-inline-functions-env"
 2. This plugin only replaces variables in the functions directory. Files outside the directory won't be modified.
 
 3. If you want to lock to a specific version(or a version that hasn't been accepted by netlify build system yet), please add `netlify-plugin-inline-functions-env` to your dev dependencies by `yarn install --dev netlify-plugin-inline-functions-env` or `npm install --save-dev netlify-plugin-inline-functions-env`.
+
+4. Take care not to declare properties by destructuring off of `process.env`, for example `const { CONTEXT } = process.env`, or else replacement will not occur. A fix for this example is `const CONTEXT = process.env.CONTEXT`
