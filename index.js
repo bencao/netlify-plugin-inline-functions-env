@@ -9,6 +9,7 @@ async function inlineEnv(path, options = {}, verbose = false) {
   console.log('inlining', path)
 
   const transformed = await babel.transformFileAsync(path, {
+    configFile: false,
     plugins: [babel.createConfigItem([inlinePlugin, options])],
     retainLines: true,
   })
