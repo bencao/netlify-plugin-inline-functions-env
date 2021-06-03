@@ -35,6 +35,7 @@ async function processFiles({ inputs, utils }) {
   try {
     netlifyFunctions = await utils.functions.listAll()
   } catch (functionMissingErr) {
+    console.log(functionMissingErr) // functions can be there but there is an error when executing
     return utils.build.failBuild(
       'Failed to inline function files because netlify function folder was not configured or pointed to a wrong folder, please check your configuration'
     )
